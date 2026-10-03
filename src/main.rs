@@ -1,6 +1,7 @@
 #![windows_subsystem = "windows"]
 
 mod config;
+mod icon;
 mod menu;
 mod renderer;
 mod theme;
@@ -30,6 +31,7 @@ struct AppState {
     width: i32,
     height: i32,
     gdiplus_token: usize,
+    app_icon: windows_sys::Win32::UI::WindowsAndMessaging::HICON,
 }
 
 fn to_wstr(s: &str) -> Vec<u16> {
@@ -252,6 +254,9 @@ unsafe extern "system" fn wnd_proc(hwnd: HWND, msg: u32, wparam: WPARAM, lparam:
                 nid.uID = TRAY_ID;
                 Shell_NotifyIconW(NIM_DELETE, &nid);
 
+                if !state.app_icon.is_null() {
+                    DestroyIcon(state.app_icon);
+                }
                 GdiplusShutdown(state.gdiplus_token);
             }
             PostQuitMessage(0);
@@ -282,6 +287,14 @@ fn main() {
         let config = load_config();
         let h_instance = GetModuleHandleW(ptr::null());
 
+        // Create sleek custom vector clock icon
+        let app_icon = icon::create_vector_clock_icon();
+        let h_icon_to_use = if !app_icon.is_null() {
+            app_icon
+        } else {
+            LoadIconW(ptr::null_mut(), IDI_APPLICATION)
+        };
+
         let class_name = to_wstr("RustClockOverlayClass");
         let wc = WNDCLASSW {
             style: CS_HREDRAW | CS_VREDRAW,
@@ -289,7 +302,7 @@ fn main() {
             cbClsExtra: 0,
             cbWndExtra: 0,
             hInstance: h_instance,
-            hIcon: LoadIconW(ptr::null_mut(), IDI_APPLICATION),
+            hIcon: h_icon_to_use,
             hCursor: LoadCursorW(ptr::null_mut(), IDC_ARROW),
             hbrBackground: ptr::null_mut(),
             lpszMenuName: ptr::null(),
@@ -310,10 +323,11 @@ fn main() {
             width: 320,
             height: 70,
             gdiplus_token,
+            app_icon,
         });
         let state_raw = Box::into_raw(state);
 
-        let window_title = to_wstr("Desktop Clock Overlay");
+        let window_title = to_wstr("Zenith Clock");
         let hwnd = CreateWindowExW(
             ex_style,
             class_name.as_ptr(),
@@ -330,19 +344,27 @@ fn main() {
         );
 
         if hwnd.is_null() {
+            if !app_icon.is_null() {
+                DestroyIcon(app_icon);
+            }
             GdiplusShutdown(gdiplus_token);
             return;
         }
 
-        // Add System Tray Icon
+        if !app_icon.is_null() {
+            SendMessageW(hwnd, WM_SETICON, ICON_BIG as WPARAM, app_icon as LPARAM);
+            SendMessageW(hwnd, WM_SETICON, ICON_SMALL as WPARAM, app_icon as LPARAM);
+        }
+
+        // Add System Tray Icon with vector clock
         let mut nid: NOTIFYICONDATAW = zeroed();
         nid.cbSize = std::mem::size_of::<NOTIFYICONDATAW>() as u32;
         nid.hWnd = hwnd;
         nid.uID = TRAY_ID;
         nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
         nid.uCallbackMessage = WM_TRAY;
-        nid.hIcon = LoadIconW(ptr::null_mut(), IDI_APPLICATION);
-        let tip_str = to_wstr("Always-On-Top Clock Overlay (Rust)");
+        nid.hIcon = h_icon_to_use;
+        let tip_str = to_wstr("Zenith Clock (Always-On-Top)");
         let copy_len = tip_str.len().min(nid.szTip.len());
         nid.szTip[..copy_len].copy_from_slice(&tip_str[..copy_len]);
         Shell_NotifyIconW(NIM_ADD, &nid);
