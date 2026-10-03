@@ -1,0 +1,15 @@
+/target
+**/*.rs.bk
+*.exe
+*.pdb
+config.json
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+Thumbs.db
+[Dd]esktop.ini

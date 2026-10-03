@@ -1,0 +1,34 @@
+[package]
+name = "zenith-clock"
+version = "1.0.0"
+edition = "2021"
+authors = ["themrsami <usamanazir13@gmail.com>"]
+repository = "https://github.com/themrsami/zenith-clock"
+description = "A lightweight, beautiful, glassmorphic always-on-top clock overlay for Windows written in 100% Rust."
+license = "MIT"
+readme = "README.md"
+keywords = ["clock", "overlay", "desktop", "windows", "glassmorphism"]
+categories = ["gui", "os::windows-apis"]
+
+[dependencies]
+chrono = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+windows-sys = { version = "0.60", features = [
+    "Win32_Foundation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_GdiPlus",
+    "Win32_Graphics_Dwm",
+    "Win32_UI_HiDpi",
+    "Win32_System_LibraryLoader",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_Shell",
+] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
