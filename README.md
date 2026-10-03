@@ -11,6 +11,8 @@
 
 <br />
 
+![Zenith Clock Hero Banner](assets/screenshots/hero_banner.png)
+
 *Floating effortlessly at the top of your screen like a sleek Dynamic Island capsule.*
 
 </div>
@@ -31,17 +33,42 @@
 
 ---
 
-## 🎨 Themes Catalog
+## 🎨 Themes Showcase
 
-| Theme | Description | Accent |
-| :--- | :--- | :--- |
-| 🌌 **Deep Glass (Dark)** | Frosted dark slate acrylic with cyan highlights *(Default)* | Sky Cyan |
-| ✨ **Midnight Gold** | Obsidian glass with luxury champagne gold typography | Amber Gold |
-| 🔮 **Cyberpunk Neon** | Synthwave aesthetic with electric neon cyan and hot pink | Neon Pink |
-| 🍃 **Emerald Mist** | Dark forest glass with fresh mint green numerals | Emerald Mint |
-| ☁️ **Pure Frost (Light)** | Crisp high-contrast frosted light glass for dark wallpapers | Royal Blue |
-| 🖤 **OLED Stealth** | Pure jet-black borderless minimal look | Platinum White |
-| 🌅 **Sunset Glow** | Deep plum acrylic with warm coral and rose tones | Coral Rose |
+Switch between 7 curated themes in real-time from the right-click menu:
+
+### 🌌 Deep Glass (Dark) *(Default)*
+![Deep Glass Theme](assets/screenshots/theme_glass_dark.png)
+
+### ✨ Midnight Gold
+![Midnight Gold Theme](assets/screenshots/theme_midnight_gold.png)
+
+### 🔮 Cyberpunk Neon
+![Cyberpunk Neon Theme](assets/screenshots/theme_cyberpunk.png)
+
+### 🍃 Emerald Mist
+![Emerald Mist Theme](assets/screenshots/theme_emerald.png)
+
+### ☁️ Pure Frost (Light)
+![Pure Frost Theme](assets/screenshots/theme_pure_frost.png)
+
+### 🖤 OLED Stealth
+![OLED Stealth Theme](assets/screenshots/theme_oled.png)
+
+### 🌅 Sunset Glow
+![Sunset Glow Theme](assets/screenshots/theme_sunset.png)
+
+---
+
+## 📐 Size Variants
+
+Zenith Clock supports 3 responsive scaling modes to fit any monitor resolution (1080p, 2K, 4K):
+
+![Size Variants](assets/screenshots/variants_sizes.png)
+
+- **Compact (Small)** — Minimalist profile, unobtrusive for gaming and coding.
+- **Normal (Standard)** — Balanced everyday desk clock overlay.
+- **Large (Prominent)** — Bold, high-visibility layout ideal for large monitors and TVs.
 
 ---
 
@@ -111,7 +138,9 @@ The compiled binary will be located at `target/release/zenith-clock.exe`.
 zenith-clock/
 ├── .github/
 │   └── workflows/
-│       └── release.yml        # Automated GitHub Actions release builder
+│       └── release.yml        # Automatic release binary builder
+├── assets/
+│   └── screenshots/           # Theme previews & hero banner
 ├── src/
 │   ├── config.rs              # Configuration loader & JSON persistence
 │   ├── menu.rs                # Win32 context menu & tray menu handlers

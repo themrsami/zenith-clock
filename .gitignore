@@ -2,6 +2,7 @@
 **/*.rs.bk
 *.exe
 *.pdb
+*.zip
 config.json
 
 # IDEs and Editors
